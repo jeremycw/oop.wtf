@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Machine Pattern: A Pig in Lipstick</title>
+    <style>
+      body {
+        margin: 40px auto;
+        max-width: 650px;
+        line-height: 1.6;
+        font-size: 17px;
+        font-family: sans-serif;
+        color: #2e2e2e;
+        padding: 0 10px
+      }
+      h1,h2,h3 {
+        line-height:1.2
+      }
+      a {
+        color: #0366d6;
+      }
+      a:visited {
+        color: #0366d6;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      pre {
+        background-color: #eeeeee;
+        padding: 5px 10px;
+        margin: 0px;
+        overflow: scroll;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/"><< Back</a>
+<h1 id="state-machine-pattern-a-pig-in-lipstick">State Machine Pattern: A Pig in Lipstick</h1>
+<p>2019-06-04</p>
+<p>To begin with let&rsquor;s define the type of state machine that is referred to in this post. State machine here refers to an explicitly coded state machine. The kind that causes terminology like: state, event and transition to appear in your code. Sometimes this is just a state variable and a switch statement and sometimes it&rsquor;s an entire framework that&rsquor;s been included. There are a litany of libraries out there that provide this type of functionality for almost every language imaginable. For example <a href="http://machina-js.org/">JavaScript</a> and <a href="https://github.com/state-machines/state_machines">Ruby</a>.</p>
+<p>The problem with state machines is that they are fancy wrappers around goto. Goto is universally despised and avoided by most programmers. State machines however seem to be heralded as a &OpenCurlyQuote;good solution&rsquor; in a lot cases by these same programmers. In fact triggering a state machine event is worse than a goto in many cases because it not only jumps the flow of logic to some other arbitrary point in the program but many libraries provide the ability to trigger arbitrary code to run between transitions. This makes it extremely hard to follow the logic of the program. You end up with implicit loops and control flow, none of which is easily readable at a glance. You end up with all the problems that have been associated with goto. The biggest problem is that you lose the ability to codify the flow of business logic at the correct abstraction level. The forest is lost for the trees.</p>
+<p>Let&rsquor;s take a simple order flow as an example. You make an online purchase, payment is processed, shipping is started, package is delivered.</p>
+<pre><code>state_machine :state, initial: :created do
+  event :pay do
+    transition :created =&gt; :paying
+  end
+  event :ship do
+    transition :paying =&gt; :shipping
+  end
+  event :transport do
+    transition :shipping =&gt; :delivering
+    transition :delivering =&gt; :delivering
+  end
+  event :deliver do
+    transition :delivering =&gt; :delivered
+  end
+
+  event :fail do
+    transition [:paying, :shipping] =&gt; :failed
+  end
+
+  after_transition on: :pay, do: :process_payment
+  after_transition on: :ship, do: :start_shipment
+  after_transition on: :transport, do: :record_location
+  after_transition on: :fail, do: :handle_failure
+  after_transition on: :deliver, do: :complete_order
+
+  def process_payment
+    res = HTTP.post(&#39;/payments&#39;, @params)
+    if res.status == 200
+      ship!
+    else
+      fail!
+    end
+  end
+
+  #...
+end</code></pre>
+<p>The above code is a striped down example of what the order flow might look like using a state machine library in ruby. It&rsquor;s already complicated and a realistic one would be much worse. Pay is probably more than a simple synchronous API call and may actually be several asynchronous events itself. Shipment too is probably a set of states. Then add in all the failure cases and you have an explosion of complexity. You could try and move pay and ship into their own state machines but then you are juggling three of these monstrosities. Also <code>process_payment</code> would never be so simple and the points where <code>ship!</code> and <code>fail!</code> are triggered will be buried in the details and potentially even buried in separate classes. This code will quickly become spaghetti as soon as any real complexity is added.</p>
+<p>Realistically this is not the code you wanted to write. It&rsquor;s a product of the asynchronous and event driven nature of the problem you are attempting to solve. If you could you would probably choose to write something like this:</p>
+<pre><code>def start_order
+  payment = pay()
+  if payment.failed?
+    handle_failure()
+    return
+  end
+  shipment = ship()
+  while shipment.delivering?
+    shipment.record_location()
+  end
+  if shipment.failed?
+    handle_failure()
+    return
+  end
+  complete_order()
+end</code></pre>
+<p>This is easy to understand and does a much better job at communicating the order flow at an abstraction level that is actually readable by a human. The problem is that the asynchronous nature of our order flow does not allow this code. How is it possible to to remain in the context of a single method call over the multiple days and weeks that this order flow may take to complete? It&rsquor;s not of course. However, we can come much closer to the ideal without using explicit state machines. The key word here is &OpenCurlyQuote;explicit&rsquor;. Computers by nature are state machines but we don&rsquor;t go programming them with explicit state, transitions and events. No, we created structured programming languages with flow control. So we need something that has regular programming flow control but can be paused and started at the point it stopped at a later time allowing code to appear linear while execution can be asynchronous.</p>
+<p>This can be achieved with coroutines (and various other constructs, but I&rsquor;m only going to talk about coroutines here). Now ruby has coroutines but they aren&rsquor;t the type of coroutine that we need. Our coroutines need the ability to be completely stopped, stored in a database and be restarted, way later, potentially in a different process than the one that created it. Ruby&rsquor;s coroutines have stacks and we can&rsquor;t just serialize the stack to the database and start it up in a different process. While this may be theoretically possible, it&rsquor;s not practically possible. What we need is called a <strong>stackless coroutine</strong>. Instead of diving into the theory I&rsquor;m just going to show what the above order flow could look like in ruby if we wrote a stackless coroutine library.</p>
+<pre><code>class Order
+  include StacklessCoroutine
+
+  attr_accessor :state
+
+  coroutine(:state) do |exec|                            # define a coroutine providing
+    exec                                                 #   the name of the state variable
+      .pay                                               # invoke subroutines
+      .if { |payment| payment.failed? }                  # control flow
+        .run { handle_failure() }                        # execute code
+        .return                                          # exit coroutine
+      .end
+      .ship
+      .while { |shipment| shipment.delivered? }          # loop
+        .run { |shipment| shipment.record_location() }
+        .yield                                           # pause execution/yield a result
+      .end
+      .if { |shipment| shipment.failed? }
+        .run { handle_failure() }
+        .return
+      .end
+      .run { complete_order() }
+  end
+
+  subroutine(:pay) do |exec|                             # define a subroutine providing
+    exec                                                 #   the name used to invoke it
+      .run { pay() }
+      .yield
+  end
+
+  subroutine(:ship) do |exec|
+    exec
+      .run { ship() }
+      .yield
+  end
+end</code></pre>
+<p>Using stackless coroutines it&rsquor;s possible to come much closer to the ideal way we want to write this code. The order flow can actually be grokked from the code now. Since our coroutines can call subroutines we can easily work around the issue of pay, and ship becoming their own complex flows using constructs we are familiar with. As with regular coroutines yield will pause execution allowing us to invoke the coroutine again at a later time from that position.</p>
+<p>The invoking code might look something like:</p>
+<pre><code>def start_order
+  order = Order.new
+  order.invoke()
+  save(order.state)
+end
+
+# in another execution context
+def payment_complete_cb(payment)
+  order.state = load()
+  order.invoke(payment)
+  save(order.state)
+end
+
+def shipment_update_cb(shipment)
+  order.state = load()
+  order.invoke(shipment)
+  save(order.state)
+end</code></pre>
+<p>All that needs to be done to facilitate the execution of our coroutine is to persist the state (an integer) between invocations and to call the <code>invoke</code> method with the current execution context. The <code>invoke</code> method will run the coroutine starting from wherever the last yield statement was. This will provide us with code that almost looks normal but is able to handle the asynchronous flows that dominate the industry today. Next time you run into a situation that looks like it might require a state machine, think again a coroutine will probably end up being more readable.</p>
+<p>If you&rsquor;re curious to try some code out yourself I&rsquor;ve created implementations of stackless coroutines in Ruby and C. The ruby implementation is almost exactly as shown above but I haven&rsquor;t implemented <code>return</code> yet.</p>
+<p><a href="https://gist.github.com/jeremycw/da9486d445f2fd80d92228d9bfcc8166">Ruby implementation</a></p>
+<p><a href="https://github.com/jeremycw/corc">C implementation</a></p>
+    <a href="/"><< Back</a>
+  </body>
+</html>
