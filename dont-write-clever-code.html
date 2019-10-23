@@ -1,0 +1,136 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Please Don't Write Clever Code</title>
+    <style>
+      body {
+        margin: 40px auto;
+        max-width: 650px;
+        line-height: 1.6;
+        font-size: 17px;
+        font-family: sans-serif;
+        color: #2e2e2e;
+        padding: 0 10px
+      }
+      h1,h2,h3 {
+        line-height:1.2
+      }
+      a {
+        color: #0366d6;
+      }
+      a:visited {
+        color: #0366d6;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      pre {
+        background-color: #eeeeee;
+        padding: 5px 10px;
+        margin: 0px;
+        overflow: scroll;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/"><< Back</a>
+<h1 id="please-dont-write-clever-code">Please Don&rsquor;t Write &OpenCurlyDoubleQuote;Clever&rdquor; Code</h1>
+<p>2019-10-23</p>
+<h2 id="or-your-code-is-baroque-n">or: Your Code is Baroque-n</h2>
+<p>I came across this code the other day, the author was quite proud of it but I would reject this PR in a heartbeat. I&rsquor;m not trying to disparage the author, most of us have gone through a &OpenCurlyDoubleQuote;clever&rdquor; code phase, myself included. I do want to take the time to point out why I think this code is bad.</p>
+<pre><code>class LogController
+  def initialize(progname = nil)
+    @progname = progname
+    @supported_storage = Setting.supported_log_storage&amp;.split(&#39;,&#39;)
+    storage = Setting.active_log_storage&amp;.upcase
+    setup_driver_for(storage)
+    @active_storage = storage
+  end
+
+  def process(input, storage = nil, other_storage = nil)
+    storage ||= check_active_storage
+    type = prefix_from(storage)
+
+    klass = Object.const_get(&quot;#{type}Log&quot;)
+    log = klass.new(input)
+    log.driver = setup_driver_for(storage)
+    return true if log.save
+
+    recall(:process, input, storage, other_storage)
+  end
+
+  def where(query, storage = nil, other_storage = nil)
+    storage ||= check_active_storage
+    type = prefix_from(storage)
+
+    klass = Object.const_get(&quot;#{type}Log&quot;)
+    results = klass.where(query)
+    return results unless results&amp;.empty?
+
+    recall(:where, query, storage, other_storage)
+  end
+
+  def recall(method, data, storage, other_storage)
+    other_storage ||= (@supported_storage - [storage])
+    storage = other_storage.pop
+    unless storage
+      return [] if method == :where
+      raise LogControllerError.new(log: data) if method == :process
+    end
+
+    send(method, data, storage, other_storage)
+  end
+
+  private
+
+  def check_active_storage
+    @active_storage = Setting.active_log_storage&amp;.upcase
+  end
+
+  def prefix_from(storage)
+    return &#39;Es&#39;  if storage == &#39;ELASTICSEARCH&#39;
+    return &#39;Pg&#39;  if storage == &#39;POSTGRES&#39;
+    return &#39;Sql&#39; if storage == &#39;SQLITE&#39;
+  end
+
+  def setup_driver_for(storage)
+    return @driver if storage == @active_storage
+
+    LogDriver.new(
+      type: storage,
+      progname: @progname,
+      host: ENV[&#39;LOG_DRIVER_HOST&#39;],
+      port: ENV[&#39;LOG_DRIVER_PORT&#39;]
+    )
+  end
+end</code></pre>
+<p>The reason I&rsquor;m putting quotes around clever here is because the code itself is not clever. Actual clever code solves the problem in a novel obscure way that that often simplifies the code. For example the classic <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">fast inverse square root</a> is clever code. &OpenCurlyDoubleQuote;Clever&rdquor; code on the other hand reads as a laundry list of obscure language features that are used for no apparent reason other than to signal how well the author knows the language.</p>
+<p>The code above is a prime example of &OpenCurlyDoubleQuote;clever&rdquor; code. There&rsquor;s tons of metaprogramming and pointless recursion which add no value and serve only to validate the authors ego and obfuscate what the code is actually doing. Most of the code in this example only exists to support the baroque choice of implementation. If you take the time to decipher the code above you&rsquor;ll find out that LogController is an abstraction to wrap around multiple logging backends. You can configure the order in which these backends will be queried in the settings of the application. This is a pretty simple problem and definitely does not require metaprogramming or recursion.</p>
+<p>Below I&rsquor;ve rewritten the code the &OpenCurlyDoubleQuote;dumb&rdquor; way which requires no metaprogramming or recursion. While it may not be as &OpenCurlyDoubleQuote;cool&rdquor; and doesn&rsquor;t show off my knowledge of ruby it reads well and is about three times shorter.</p>
+<pre><code>class LogController
+  def initialize(progname = nil)
+    logger_backends = {
+      &#39;ELASTICSEARCH&#39; =&gt; EsLog.new(progname),
+      &#39;POSTGRES&#39;      =&gt; PgLog.new(progname),
+      &#39;SQLITE&#39;        =&gt; SqlLog.new(progname),
+    }
+    @loggers = Settings.log_backend_priorities.split(&#39;,&#39;).map { |k| logger_backends[k] }
+  end
+
+  def where(query)
+    @loggers.each do |logger|
+      results = logger.where(query)
+      return results if results.present?
+    end
+  end
+
+  def process(log)
+    @loggers.each do |logger|
+      return if logger.process(log)
+    end
+  end
+end</code></pre>
+<p>Please don&rsquor;t write &OpenCurlyDoubleQuote;clever&rdquor; code because the &OpenCurlyDoubleQuote;dumb&rdquor; code is usually better in every way.</p>
+    <a href="/"><< Back</a>
+  </body>
+</html>
