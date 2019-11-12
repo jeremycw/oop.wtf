@@ -34,10 +34,10 @@
   </head>
   <body>
     <a href="/"><< Back</a>
-<h1 id="please-dont-write-clever-code">Please Don&rsquor;t Write &OpenCurlyDoubleQuote;Clever&rdquor; Code</h1>
+<h1 id="please-dont-write-clever-code">Please Don&#8217;t Write &#8220;Clever&#8221; Code</h1>
 <p>2019-10-23</p>
 <h2 id="or-your-code-is-baroque-n">or: Your Code is Baroque-n</h2>
-<p>I came across this code the other day, the author was quite proud of it but I would reject this PR in a heartbeat. I&rsquor;m not trying to disparage the author, most of us have gone through a &OpenCurlyDoubleQuote;clever&rdquor; code phase, myself included. I do want to take the time to point out why I think this code is bad.</p>
+<p>I came across this code the other day, the author was quite proud of it but I would reject this PR in a heartbeat. I&#8217;m not trying to disparage the author, most of us have gone through a &#8220;clever&#8221; code phase, myself included. I do want to take the time to point out why I think this code is bad.</p>
 <pre><code>class LogController
   def initialize(progname = nil)
     @progname = progname
@@ -104,9 +104,9 @@
     )
   end
 end</code></pre>
-<p>The reason I&rsquor;m putting quotes around clever here is because the code itself is not clever. Actual clever code solves the problem in a novel obscure way that that often simplifies the code. For example the classic <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">fast inverse square root</a> is clever code. &OpenCurlyDoubleQuote;Clever&rdquor; code on the other hand reads as a laundry list of obscure language features that are used for no apparent reason other than to signal how well the author knows the language.</p>
-<p>The code above is a prime example of &OpenCurlyDoubleQuote;clever&rdquor; code. There&rsquor;s tons of metaprogramming and pointless recursion which add no value and serve only to validate the authors ego and obfuscate what the code is actually doing. Most of the code in this example only exists to support the baroque choice of implementation. If you take the time to decipher the code above you&rsquor;ll find out that LogController is an abstraction to wrap around multiple logging backends. You can configure the order in which these backends will be queried in the settings of the application. This is a pretty simple problem and definitely does not require metaprogramming or recursion.</p>
-<p>Below I&rsquor;ve rewritten the code the &OpenCurlyDoubleQuote;dumb&rdquor; way which requires no metaprogramming or recursion. While it may not be as &OpenCurlyDoubleQuote;cool&rdquor; and doesn&rsquor;t show off my knowledge of ruby it reads well and is about three times shorter.</p>
+<p>The reason I&#8217;m putting quotes around clever here is because the code itself is not clever. Actual clever code solves the problem in a novel obscure way that that often simplifies the code. For example the classic <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">fast inverse square root</a> is clever code. &#8220;Clever&#8221; code on the other hand reads as a laundry list of obscure language features that are used for no apparent reason other than to signal how well the author knows the language.</p>
+<p>The code above is a prime example of &#8220;clever&#8221; code. There&#8217;s tons of metaprogramming and pointless recursion which add no value and serve only to validate the authors ego and obfuscate what the code is actually doing. Most of the code in this example only exists to support the baroque choice of implementation. If you take the time to decipher the code above you&#8217;ll find out that LogController is an abstraction to wrap around multiple logging backends. You can configure the order in which these backends will be queried in the settings of the application. This is a pretty simple problem and definitely does not require metaprogramming or recursion.</p>
+<p>Below I&#8217;ve rewritten the code the &#8220;dumb&#8221; way which requires no metaprogramming or recursion. While it may not be as &#8220;cool&#8221; and doesn&#8217;t show off my knowledge of ruby it reads well and is about three times shorter.</p>
 <pre><code>class LogController
   def initialize(progname = nil)
     logger_backends = {
@@ -130,7 +130,7 @@ end</code></pre>
     end
   end
 end</code></pre>
-<p>Please don&rsquor;t write &OpenCurlyDoubleQuote;clever&rdquor; code because the &OpenCurlyDoubleQuote;dumb&rdquor; code is usually better in every way.</p>
+<p>Please don&#8217;t write &#8220;clever&#8221; code because the &#8220;dumb&#8221; code is usually better in every way.</p>
     <a href="/"><< Back</a>
   </body>
 </html>
