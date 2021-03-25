@@ -5,77 +5,210 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Please Don't Write Clever Code</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    background-color: #073642;
-    color: #839496;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #839496;  padding-left: 4px; }
-div.sourceCode
-  { color: #839496; background-color: #002b36; }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span. { color: #839496; } /* Normal */
-code span.al { color: #839496; } /* Alert */
-code span.an { color: #839496; } /* Annotation */
-code span.at { color: #839496; } /* Attribute */
-code span.bn { color: #839496; } /* BaseN */
-code span.bu { color: #839496; } /* BuiltIn */
-code span.cf { color: #719e07; } /* ControlFlow */
-code span.ch { color: #cb4b16; } /* Char */
-code span.cn { color: #839496; } /* Constant */
-code span.co { color: #586e75; } /* Comment */
-code span.cv { color: #586e75; } /* CommentVar */
-code span.do { color: #839496; } /* Documentation */
-code span.dt { color: #b58900; } /* DataType */
-code span.dv { color: #2aa198; } /* DecVal */
-code span.er { color: #839496; } /* Error */
-code span.ex { color: #839496; } /* Extension */
-code span.fl { color: #839496; } /* Float */
-code span.fu { color: #268bd2; } /* Function */
-code span.im { color: #839496; } /* Import */
-code span.in { color: #839496; } /* Information */
-code span.kw { color: #719e07; } /* Keyword */
-code span.op { color: #839496; } /* Operator */
-code span.ot { color: #268bd2; } /* Other */
-code span.pp { color: #839496; } /* Preprocessor */
-code span.re { color: #839496; } /* RegionMarker */
-code span.sc { color: #839496; } /* SpecialChar */
-code span.ss { color: #839496; } /* SpecialString */
-code span.st { color: #2aa198; } /* String */
-code span.va { color: #268bd2; } /* Variable */
-code span.vs { color: #2aa198; } /* VerbatimString */
-code span.wa { color: #839496; } /* Warning */
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        background-color: #073642;
+        color: #839496;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #839496;  padding-left: 4px; }
+    div.sourceCode
+      { color: #839496; background-color: #002b36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #839496; } /* Normal */
+    code span.al { color: #839496; } /* Alert */
+    code span.an { color: #839496; } /* Annotation */
+    code span.at { color: #839496; } /* Attribute */
+    code span.bn { color: #839496; } /* BaseN */
+    code span.bu { color: #839496; } /* BuiltIn */
+    code span.cf { color: #719e07; } /* ControlFlow */
+    code span.ch { color: #cb4b16; } /* Char */
+    code span.cn { color: #839496; } /* Constant */
+    code span.co { color: #839496; } /* Comment */
+    code span.cv { color: #839496; } /* CommentVar */
+    code span.do { color: #839496; } /* Documentation */
+    code span.dt { color: #b58900; } /* DataType */
+    code span.dv { color: #839496; } /* DecVal */
+    code span.er { color: #839496; } /* Error */
+    code span.ex { color: #839496; } /* Extension */
+    code span.fl { color: #839496; } /* Float */
+    code span.fu { color: #268bd2; } /* Function */
+    code span.im { color: #839496; } /* Import */
+    code span.in { color: #839496; } /* Information */
+    code span.kw { color: #719e07; } /* Keyword */
+    code span.op { color: #839496; } /* Operator */
+    code span.ot { color: #268bd2; } /* Other */
+    code span.pp { color: #839496; } /* Preprocessor */
+    code span.re { color: #839496; } /* RegionMarker */
+    code span.sc { color: #839496; } /* SpecialChar */
+    code span.ss { color: #839496; } /* SpecialString */
+    code span.st { color: #2aa198; } /* String */
+    code span.va { color: #268bd2; } /* Variable */
+    code span.vs { color: #2aa198; } /* VerbatimString */
+    code span.wa { color: #839496; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -111,103 +244,103 @@ code span.wa { color: #839496; } /* Warning */
 </head>
 <body>
 <a href="/"><< Back</a>
-<h1 id="please-dont-write-clever-code">Please Don&rsquor;t Write &OpenCurlyDoubleQuote;Clever&rdquor; Code</h1>
+<h1 id="please-dont-write-clever-code">Please Don&#x2019;t Write Clever Code</h1>
 <p>2019-10-23</p>
 <h2 id="or-your-code-is-baroque-n">or: Your Code is Baroque-n</h2>
-<p>I came across this code the other day, the author was quite proud of it but I would reject this PR in a heartbeat. I&rsquor;m not trying to disparage the author, most of us have gone through a &OpenCurlyDoubleQuote;clever&rdquor; code phase, myself included. I do want to take the time to point out why I think this code is bad.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">class</span> <span class="dt">LogController</span></a>
-<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">def</span> initialize(progname = <span class="dv">nil</span>)</a>
-<a class="sourceLine" id="cb1-3" title="3">    <span class="ot">@progname</span> = progname</a>
-<a class="sourceLine" id="cb1-4" title="4">    <span class="ot">@supported_storage</span> = <span class="dt">Setting</span>.supported_log_storage&amp;.split(<span class="ch">&#39;,&#39;</span>)</a>
-<a class="sourceLine" id="cb1-5" title="5">    storage = <span class="dt">Setting</span>.active_log_storage&amp;.upcase</a>
-<a class="sourceLine" id="cb1-6" title="6">    setup_driver_for(storage)</a>
-<a class="sourceLine" id="cb1-7" title="7">    <span class="ot">@active_storage</span> = storage</a>
-<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-9" title="9"></a>
-<a class="sourceLine" id="cb1-10" title="10">  <span class="kw">def</span> process(input, storage = <span class="dv">nil</span>, other_storage = <span class="dv">nil</span>)</a>
-<a class="sourceLine" id="cb1-11" title="11">    storage ||= check_active_storage</a>
-<a class="sourceLine" id="cb1-12" title="12">    type = prefix_from(storage)</a>
-<a class="sourceLine" id="cb1-13" title="13"></a>
-<a class="sourceLine" id="cb1-14" title="14">    klass = <span class="dt">Object</span>.const_get(<span class="st">&quot;</span><span class="ot">#{</span>type<span class="ot">}</span><span class="st">Log&quot;</span>)</a>
-<a class="sourceLine" id="cb1-15" title="15">    log = klass.new(input)</a>
-<a class="sourceLine" id="cb1-16" title="16">    log.driver = setup_driver_for(storage)</a>
-<a class="sourceLine" id="cb1-17" title="17">    <span class="kw">return</span> <span class="dv">true</span> <span class="kw">if</span> log.save</a>
-<a class="sourceLine" id="cb1-18" title="18"></a>
-<a class="sourceLine" id="cb1-19" title="19">    recall(<span class="st">:process</span>, input, storage, other_storage)</a>
-<a class="sourceLine" id="cb1-20" title="20">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-21" title="21"></a>
-<a class="sourceLine" id="cb1-22" title="22">  <span class="kw">def</span> where(query, storage = <span class="dv">nil</span>, other_storage = <span class="dv">nil</span>)</a>
-<a class="sourceLine" id="cb1-23" title="23">    storage ||= check_active_storage</a>
-<a class="sourceLine" id="cb1-24" title="24">    type = prefix_from(storage)</a>
-<a class="sourceLine" id="cb1-25" title="25"></a>
-<a class="sourceLine" id="cb1-26" title="26">    klass = <span class="dt">Object</span>.const_get(<span class="st">&quot;</span><span class="ot">#{</span>type<span class="ot">}</span><span class="st">Log&quot;</span>)</a>
-<a class="sourceLine" id="cb1-27" title="27">    results = klass.where(query)</a>
-<a class="sourceLine" id="cb1-28" title="28">    <span class="kw">return</span> results <span class="kw">unless</span> results&amp;.empty?</a>
-<a class="sourceLine" id="cb1-29" title="29"></a>
-<a class="sourceLine" id="cb1-30" title="30">    recall(<span class="st">:where</span>, query, storage, other_storage)</a>
-<a class="sourceLine" id="cb1-31" title="31">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-32" title="32"></a>
-<a class="sourceLine" id="cb1-33" title="33">  <span class="kw">def</span> recall(method, data, storage, other_storage)</a>
-<a class="sourceLine" id="cb1-34" title="34">    other_storage ||= (<span class="ot">@supported_storage</span> - [storage])</a>
-<a class="sourceLine" id="cb1-35" title="35">    storage = other_storage.pop</a>
-<a class="sourceLine" id="cb1-36" title="36">    <span class="kw">unless</span> storage</a>
-<a class="sourceLine" id="cb1-37" title="37">      <span class="kw">return</span> [] <span class="kw">if</span> method == <span class="st">:where</span></a>
-<a class="sourceLine" id="cb1-38" title="38">      raise <span class="dt">LogControllerError</span>.new(<span class="st">log: </span>data) <span class="kw">if</span> method == <span class="st">:process</span></a>
-<a class="sourceLine" id="cb1-39" title="39">    <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-40" title="40"></a>
-<a class="sourceLine" id="cb1-41" title="41">    send(method, data, storage, other_storage)</a>
-<a class="sourceLine" id="cb1-42" title="42">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-43" title="43"></a>
-<a class="sourceLine" id="cb1-44" title="44">  <span class="kw">private</span></a>
-<a class="sourceLine" id="cb1-45" title="45"></a>
-<a class="sourceLine" id="cb1-46" title="46">  <span class="kw">def</span> check_active_storage</a>
-<a class="sourceLine" id="cb1-47" title="47">    <span class="ot">@active_storage</span> = <span class="dt">Setting</span>.active_log_storage&amp;.upcase</a>
-<a class="sourceLine" id="cb1-48" title="48">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-49" title="49"></a>
-<a class="sourceLine" id="cb1-50" title="50">  <span class="kw">def</span> prefix_from(storage)</a>
-<a class="sourceLine" id="cb1-51" title="51">    <span class="kw">return</span> <span class="st">&#39;Es&#39;</span>  <span class="kw">if</span> storage == <span class="st">&#39;ELASTICSEARCH&#39;</span></a>
-<a class="sourceLine" id="cb1-52" title="52">    <span class="kw">return</span> <span class="st">&#39;Pg&#39;</span>  <span class="kw">if</span> storage == <span class="st">&#39;POSTGRES&#39;</span></a>
-<a class="sourceLine" id="cb1-53" title="53">    <span class="kw">return</span> <span class="st">&#39;Sql&#39;</span> <span class="kw">if</span> storage == <span class="st">&#39;SQLITE&#39;</span></a>
-<a class="sourceLine" id="cb1-54" title="54">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-55" title="55"></a>
-<a class="sourceLine" id="cb1-56" title="56">  <span class="kw">def</span> setup_driver_for(storage)</a>
-<a class="sourceLine" id="cb1-57" title="57">    <span class="kw">return</span> <span class="ot">@driver</span> <span class="kw">if</span> storage == <span class="ot">@active_storage</span></a>
-<a class="sourceLine" id="cb1-58" title="58"></a>
-<a class="sourceLine" id="cb1-59" title="59">    <span class="dt">LogDriver</span>.new(</a>
-<a class="sourceLine" id="cb1-60" title="60">      <span class="st">type: </span>storage,</a>
-<a class="sourceLine" id="cb1-61" title="61">      <span class="st">progname: </span><span class="ot">@progname</span>,</a>
-<a class="sourceLine" id="cb1-62" title="62">      <span class="st">host: </span><span class="dt">ENV</span>[<span class="st">&#39;LOG_DRIVER_HOST&#39;</span>],</a>
-<a class="sourceLine" id="cb1-63" title="63">      <span class="st">port: </span><span class="dt">ENV</span>[<span class="st">&#39;LOG_DRIVER_PORT&#39;</span>]</a>
-<a class="sourceLine" id="cb1-64" title="64">    )</a>
-<a class="sourceLine" id="cb1-65" title="65">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb1-66" title="66"><span class="kw">end</span></a></code></pre></div>
-<p>The reason I&rsquor;m putting quotes around clever here is because the code itself is not clever. Actual clever code solves the problem in a novel obscure way that that often simplifies the code. For example the classic <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">fast inverse square root</a> is clever code. &OpenCurlyDoubleQuote;Clever&rdquor; code on the other hand reads as a laundry list of obscure language features that are used for no apparent reason other than to signal how well the author knows the language.</p>
-<p>The code above is a prime example of &OpenCurlyDoubleQuote;clever&rdquor; code. There&rsquor;s tons of metaprogramming and pointless recursion which add no value and serve only to validate the authors ego and obfuscate what the code is actually doing. Most of the code in this example only exists to support the baroque choice of implementation. If you take the time to decipher the code above you&rsquor;ll find out that LogController is an abstraction to wrap around multiple logging backends. You can configure the order in which these backends will be queried in the settings of the application. This is a pretty simple problem and definitely does not require metaprogramming or recursion.</p>
-<p>Below I&rsquor;ve rewritten the code the &OpenCurlyDoubleQuote;dumb&rdquor; way which requires no metaprogramming or recursion. While it may not be as &OpenCurlyDoubleQuote;cool&rdquor; and doesn&rsquor;t show off my knowledge of ruby it reads well and is about three times shorter.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">class</span> <span class="dt">LogController</span></a>
-<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">def</span> initialize(progname = <span class="dv">nil</span>)</a>
-<a class="sourceLine" id="cb2-3" title="3">    logger_backends = {</a>
-<a class="sourceLine" id="cb2-4" title="4">      <span class="st">&#39;ELASTICSEARCH&#39;</span> =&gt; <span class="dt">EsLog</span>.new(progname),</a>
-<a class="sourceLine" id="cb2-5" title="5">      <span class="st">&#39;POSTGRES&#39;</span>      =&gt; <span class="dt">PgLog</span>.new(progname),</a>
-<a class="sourceLine" id="cb2-6" title="6">      <span class="st">&#39;SQLITE&#39;</span>        =&gt; <span class="dt">SqlLog</span>.new(progname),</a>
-<a class="sourceLine" id="cb2-7" title="7">    }</a>
-<a class="sourceLine" id="cb2-8" title="8">    <span class="ot">@loggers</span> = <span class="dt">Settings</span>.log_backend_priorities.split(<span class="ch">&#39;,&#39;</span>).map { |k| logger_backends[k] }</a>
-<a class="sourceLine" id="cb2-9" title="9">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb2-10" title="10"></a>
-<a class="sourceLine" id="cb2-11" title="11">  <span class="kw">def</span> where(query)</a>
-<a class="sourceLine" id="cb2-12" title="12">    <span class="ot">@loggers</span>.each <span class="kw">do</span> |logger|</a>
-<a class="sourceLine" id="cb2-13" title="13">      results = logger.where(query)</a>
-<a class="sourceLine" id="cb2-14" title="14">      <span class="kw">return</span> results <span class="kw">if</span> results.present?</a>
-<a class="sourceLine" id="cb2-15" title="15">    <span class="kw">end</span></a>
-<a class="sourceLine" id="cb2-16" title="16">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb2-17" title="17"></a>
-<a class="sourceLine" id="cb2-18" title="18">  <span class="kw">def</span> process(log)</a>
-<a class="sourceLine" id="cb2-19" title="19">    <span class="ot">@loggers</span>.each <span class="kw">do</span> |logger|</a>
-<a class="sourceLine" id="cb2-20" title="20">      <span class="kw">return</span> <span class="kw">if</span> logger.process(log)</a>
-<a class="sourceLine" id="cb2-21" title="21">    <span class="kw">end</span></a>
-<a class="sourceLine" id="cb2-22" title="22">  <span class="kw">end</span></a>
-<a class="sourceLine" id="cb2-23" title="23"><span class="kw">end</span></a></code></pre></div>
-<p>Please don&rsquor;t write &OpenCurlyDoubleQuote;clever&rdquor; code because the &OpenCurlyDoubleQuote;dumb&rdquor; code is usually better in every way.</p>
+<p>I came across this code the other day, the author was quite proud of it but I would reject this PR in a heartbeat. I&#x2019;m not trying to disparage the author, most of us have gone through a &#x201C;clever&#x201D; code phase, myself included. I do want to take the time to point out why I think this code is bad.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby"><code class="sourceCode ruby"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">class</span> <span class="dt">LogController</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> initialize(progname <span class="kw">=</span> <span class="dv">nil</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="ot">@progname</span> <span class="kw">=</span> progname</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">@supported_storage</span> <span class="kw">=</span> <span class="dt">Setting</span><span class="at">.supported_log_storage</span><span class="kw">&amp;</span><span class="at">.split</span>(<span class="ch">&#39;,&#39;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    storage <span class="kw">=</span> <span class="dt">Setting</span><span class="at">.active_log_storage</span><span class="kw">&amp;</span><span class="at">.upcase</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    setup_driver_for(storage)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">@active_storage</span> <span class="kw">=</span> storage</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> process(input, storage <span class="kw">=</span> <span class="dv">nil</span>, other_storage <span class="kw">=</span> <span class="dv">nil</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    storage <span class="kw">||=</span> check_active_storage</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    type <span class="kw">=</span> prefix_from(storage)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    klass <span class="kw">=</span> <span class="dt">Object</span><span class="at">.const_get</span>(<span class="st">&quot;</span><span class="sc">#{</span>type<span class="sc">}</span><span class="st">Log&quot;</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    log <span class="kw">=</span> klass<span class="at">.new</span>(input)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    log<span class="at">.driver</span> <span class="kw">=</span> setup_driver_for(storage)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">true</span> <span class="cf">if</span> log<span class="at">.save</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    recall(<span class="wa">:process</span>, input, storage, other_storage)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> where(query, storage <span class="kw">=</span> <span class="dv">nil</span>, other_storage <span class="kw">=</span> <span class="dv">nil</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    storage <span class="kw">||=</span> check_active_storage</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    type <span class="kw">=</span> prefix_from(storage)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    klass <span class="kw">=</span> <span class="dt">Object</span><span class="at">.const_get</span>(<span class="st">&quot;</span><span class="sc">#{</span>type<span class="sc">}</span><span class="st">Log&quot;</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    results <span class="kw">=</span> klass<span class="at">.where</span>(query)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results <span class="cf">unless</span> results<span class="kw">&amp;</span><span class="at">.empty?</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    recall(<span class="wa">:where</span>, query, storage, other_storage)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> recall(method, data, storage, other_storage)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    other_storage <span class="kw">||=</span> (<span class="ot">@supported_storage</span> <span class="kw">-</span> <span class="kw">[</span>storage<span class="kw">]</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    storage <span class="kw">=</span> other_storage<span class="at">.pop</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">unless</span> storage</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">[]</span> <span class="cf">if</span> method <span class="kw">==</span> <span class="wa">:where</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">raise</span> <span class="dt">LogControllerError</span><span class="at">.new</span>(<span class="wa">log: </span>data) <span class="cf">if</span> method <span class="kw">==</span> <span class="wa">:process</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    send(method, data, storage, other_storage)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">private</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> check_active_storage</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="ot">@active_storage</span> <span class="kw">=</span> <span class="dt">Setting</span><span class="at">.active_log_storage</span><span class="kw">&amp;</span><span class="at">.upcase</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> prefix_from(storage)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="vs">&#39;Es&#39;</span>  <span class="cf">if</span> storage <span class="kw">==</span> <span class="vs">&#39;ELASTICSEARCH&#39;</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="vs">&#39;Pg&#39;</span>  <span class="cf">if</span> storage <span class="kw">==</span> <span class="vs">&#39;POSTGRES&#39;</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="vs">&#39;Sql&#39;</span> <span class="cf">if</span> storage <span class="kw">==</span> <span class="vs">&#39;SQLITE&#39;</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> setup_driver_for(storage)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ot">@driver</span> <span class="cf">if</span> storage <span class="kw">==</span> <span class="ot">@active_storage</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    <span class="dt">LogDriver</span><span class="at">.new</span>(</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>      <span class="wa">type: </span>storage,</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>      <span class="wa">progname: </span><span class="ot">@progname</span>,</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>      <span class="wa">host: </span><span class="cn">ENV</span><span class="kw">[</span><span class="vs">&#39;LOG_DRIVER_HOST&#39;</span><span class="kw">]</span>,</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>      <span class="wa">port: </span><span class="cn">ENV</span><span class="kw">[</span><span class="vs">&#39;LOG_DRIVER_PORT&#39;</span><span class="kw">]</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<p>The reason I&#x2019;m putting quotes around clever here is because the code itself is not clever. Actual clever code solves the problem in a novel obscure way that that often simplifies the code. For example the classic <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">fast inverse square root</a> is clever code. &#x201C;Clever&#x201D; code on the other hand reads as a laundry list of obscure language features that are used for no apparent reason other than to signal how well the author knows the language.</p>
+<p>The code above is a prime example of &#x201C;clever&#x201D; code. There&#x2019;s tons of metaprogramming and pointless recursion which add no value and serve only to validate the authors ego and obfuscate what the code is actually doing. Most of the code in this example only exists to support the baroque choice of implementation. If you take the time to decipher the code above you&#x2019;ll find out that LogController is an abstraction to wrap around multiple logging backends. You can configure the order in which these backends will be queried in the settings of the application. This is a pretty simple problem and definitely does not require metaprogramming or recursion.</p>
+<p>Below I&#x2019;ve rewritten the code the &#x201C;dumb&#x201D; way which requires no metaprogramming or recursion. While it may not be as &#x201C;cool&#x201D; and doesn&#x2019;t show off my knowledge of ruby it reads well and is about three times shorter.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby"><code class="sourceCode ruby"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">class</span> <span class="dt">LogController</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> initialize(progname <span class="kw">=</span> <span class="dv">nil</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    logger_backends <span class="kw">=</span> <span class="kw">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="vs">&#39;ELASTICSEARCH&#39;</span> <span class="kw">=&gt;</span> <span class="dt">EsLog</span><span class="at">.new</span>(progname),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="vs">&#39;POSTGRES&#39;</span>      <span class="kw">=&gt;</span> <span class="dt">PgLog</span><span class="at">.new</span>(progname),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="vs">&#39;SQLITE&#39;</span>        <span class="kw">=&gt;</span> <span class="dt">SqlLog</span><span class="at">.new</span>(progname),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">@loggers</span> <span class="kw">=</span> <span class="dt">Settings</span><span class="at">.log_backend_priorities.split</span>(<span class="ch">&#39;,&#39;</span>)<span class="at">.map</span> <span class="kw">{</span> <span class="kw">|</span>k<span class="kw">|</span> logger_backends<span class="kw">[</span>k<span class="kw">]</span> <span class="kw">}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> where(query)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="ot">@loggers</span><span class="at">.each</span> <span class="cf">do</span> <span class="kw">|</span>logger<span class="kw">|</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      results <span class="kw">=</span> logger<span class="at">.where</span>(query)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> results <span class="cf">if</span> results<span class="at">.present?</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> process(log)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="ot">@loggers</span><span class="at">.each</span> <span class="cf">do</span> <span class="kw">|</span>logger<span class="kw">|</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="cf">if</span> logger<span class="at">.process</span>(log)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<p>Please don&#x2019;t write &#x201C;clever&#x201D; code because the &#x201C;dumb&#x201D; code is usually better in every way.</p>
 <a href="/"><< Back</a>
 </body>
 </html>

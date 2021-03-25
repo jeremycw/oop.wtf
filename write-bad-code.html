@@ -5,77 +5,210 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Write Bad Code</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    background-color: #073642;
-    color: #839496;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #839496;  padding-left: 4px; }
-div.sourceCode
-  { color: #839496; background-color: #002b36; }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span. { color: #839496; } /* Normal */
-code span.al { color: #839496; } /* Alert */
-code span.an { color: #839496; } /* Annotation */
-code span.at { color: #839496; } /* Attribute */
-code span.bn { color: #839496; } /* BaseN */
-code span.bu { color: #839496; } /* BuiltIn */
-code span.cf { color: #719e07; } /* ControlFlow */
-code span.ch { color: #cb4b16; } /* Char */
-code span.cn { color: #839496; } /* Constant */
-code span.co { color: #586e75; } /* Comment */
-code span.cv { color: #586e75; } /* CommentVar */
-code span.do { color: #839496; } /* Documentation */
-code span.dt { color: #b58900; } /* DataType */
-code span.dv { color: #2aa198; } /* DecVal */
-code span.er { color: #839496; } /* Error */
-code span.ex { color: #839496; } /* Extension */
-code span.fl { color: #839496; } /* Float */
-code span.fu { color: #268bd2; } /* Function */
-code span.im { color: #839496; } /* Import */
-code span.in { color: #839496; } /* Information */
-code span.kw { color: #719e07; } /* Keyword */
-code span.op { color: #839496; } /* Operator */
-code span.ot { color: #268bd2; } /* Other */
-code span.pp { color: #839496; } /* Preprocessor */
-code span.re { color: #839496; } /* RegionMarker */
-code span.sc { color: #839496; } /* SpecialChar */
-code span.ss { color: #839496; } /* SpecialString */
-code span.st { color: #2aa198; } /* String */
-code span.va { color: #268bd2; } /* Variable */
-code span.vs { color: #2aa198; } /* VerbatimString */
-code span.wa { color: #839496; } /* Warning */
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        background-color: #073642;
+        color: #839496;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #839496;  padding-left: 4px; }
+    div.sourceCode
+      { color: #839496; background-color: #002b36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #839496; } /* Normal */
+    code span.al { color: #839496; } /* Alert */
+    code span.an { color: #839496; } /* Annotation */
+    code span.at { color: #839496; } /* Attribute */
+    code span.bn { color: #839496; } /* BaseN */
+    code span.bu { color: #839496; } /* BuiltIn */
+    code span.cf { color: #719e07; } /* ControlFlow */
+    code span.ch { color: #cb4b16; } /* Char */
+    code span.cn { color: #839496; } /* Constant */
+    code span.co { color: #839496; } /* Comment */
+    code span.cv { color: #839496; } /* CommentVar */
+    code span.do { color: #839496; } /* Documentation */
+    code span.dt { color: #b58900; } /* DataType */
+    code span.dv { color: #839496; } /* DecVal */
+    code span.er { color: #839496; } /* Error */
+    code span.ex { color: #839496; } /* Extension */
+    code span.fl { color: #839496; } /* Float */
+    code span.fu { color: #268bd2; } /* Function */
+    code span.im { color: #839496; } /* Import */
+    code span.in { color: #839496; } /* Information */
+    code span.kw { color: #719e07; } /* Keyword */
+    code span.op { color: #839496; } /* Operator */
+    code span.ot { color: #268bd2; } /* Other */
+    code span.pp { color: #839496; } /* Preprocessor */
+    code span.re { color: #839496; } /* RegionMarker */
+    code span.sc { color: #839496; } /* SpecialChar */
+    code span.ss { color: #839496; } /* SpecialString */
+    code span.st { color: #2aa198; } /* String */
+    code span.va { color: #268bd2; } /* Variable */
+    code span.vs { color: #2aa198; } /* VerbatimString */
+    code span.wa { color: #839496; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -114,11 +247,11 @@ code span.wa { color: #839496; } /* Warning */
 <h1 id="write-bad-code">Write Bad Code</h1>
 <p>2019-03-08</p>
 <h2 id="or-how-i-learned-to-code-the-thing">or: How I Learned to Code the Thing</h2>
-<p>My goal with this post is to maybe put a seed of doubt into how you perceive what is &OpenCurlyQuote;good&rsquor; code and what is &OpenCurlyQuote;bad&rsquor; code. First though, I&rsquor;m going to break down what I feel someone means when they say &OpenCurlyQuote;This is good code&rsquor; thereby defining &OpenCurlyQuote;bad&rsquor; code as the opposite of that.</p>
-<p>When I hear someone qualify code as &OpenCurlyQuote;good&rsquor; code it generally means that the code meets some checklist of principles that they have internalized over their career or education. These are definitely not the same for every programmer and can vary greatly for programmers who follow different programming paradigms like Object Oriented vs.&NonBreakingSpace;Functional. Here are some examples that you&rsquor;ve probably heard and possibly believe yourself:</p>
+<p>My goal with this post is to maybe put a seed of doubt into how you perceive what is &#x2018;good&#x2019; code and what is &#x2018;bad&#x2019; code. First though, I&#x2019;m going to break down what I feel someone means when they say &#x2018;This is good code&#x2019; thereby defining &#x2018;bad&#x2019; code as the opposite of that.</p>
+<p>When I hear someone qualify code as &#x2018;good&#x2019; code it generally means that the code meets some checklist of principles that they have internalized over their career or education. These are definitely not the same for every programmer and can vary greatly for programmers who follow different programming paradigms like Object Oriented vs.&#xA0;Functional. Here are some examples that you&#x2019;ve probably heard and possibly believe yourself:</p>
 <ul>
-<li>Don&rsquor;t use global variables</li>
-<li>Don&rsquor;t use singletons</li>
+<li>Don&#x2019;t use global variables</li>
+<li>Don&#x2019;t use singletons</li>
 <li>Composition over inheritance</li>
 <li>Method has no more than 5 parameters</li>
 <li>Functions should be pure</li>
@@ -127,22 +260,22 @@ code span.wa { color: #839496; } /* Warning */
 <li>DRY</li>
 <li>Uses currently in vogue architecture</li>
 </ul>
-<p>The list could go on and on. Good code often dogmatically follows these rules and any piece of code that doesn&rsquor;t is a hack or something that needs to be refactored later. Bad code, being the opposite of good code would be code that doesn&rsquor;t follow these rules.</p>
-<p>I feel this is because of our need to quantify things as engineers. We want a reproducible method of solving all problems, the One True Way so we come up with rules to follow that will always produce &OpenCurlyQuote;good&rsquor; code.</p>
-<p>What&rsquor;s the problem with this? The first issue is that you can no longer solve the problem in the most straight forward way. You&rsquor;ve constructed a maze of restrictions to code around that will ultimately end up in more code being written. It will take longer to write this code as well since you need to think not only about solving the problem you set out to you have to solve it in a way that satisfies the numerous constraints you&rsquor;ve imposed on yourself. This is tantamount to coding with one hand tied behind your back.</p>
-<p>Next, as I said, you end up with more code. Not only more code but code that doesn&rsquor;t solve your problem. It&rsquor;s code that solves the fake problem you made for yourself. The more code like this that your project has the harder it becomes to understand what is happening. The signal to noise ratio can quickly deteriorate as more code is added to deal with problems created by code that was never needed in the first place. Some of the worst cases I&rsquor;ve seen of this happen when trying to follow some architecture or introducing patterns into the code.</p>
-<p>It&rsquor;s also evident to me that these rules of &OpenCurlyQuote;good&rsquor; code are so ingrained in people that they can&rsquor;t see past them. On a Hacker News <a href="http://iolivia.me/posts/24-hours-of-rust-game-dev/">post</a> a few days ago there was a classic &OpenCurlyDoubleQuote;Look at this architecture in a toy example, it will solve all your problems&rdquor;. In this case it was about Entity Component System. Jon Blow <a href="https://news.ycombinator.com/item?id=19307458">commented</a> pointing out that ECS is completely unnecessary and this could be better solved by writing code in the most obvious way. This <a href="https://news.ycombinator.com/item?id=19309151">reply</a> which I&rsquor;ll quote here exemplifies the mental shackles &OpenCurlyQuote;good&rsquor; code puts on people:</p>
+<p>The list could go on and on. Good code often dogmatically follows these rules and any piece of code that doesn&#x2019;t is a hack or something that needs to be refactored later. Bad code, being the opposite of good code would be code that doesn&#x2019;t follow these rules.</p>
+<p>I feel this is because of our need to quantify things as engineers. We want a reproducible method of solving all problems, the One True Way so we come up with rules to follow that will always produce &#x2018;good&#x2019; code.</p>
+<p>What&#x2019;s the problem with this? The first issue is that you can no longer solve the problem in the most straight forward way. You&#x2019;ve constructed a maze of restrictions to code around that will ultimately end up in more code being written. It will take longer to write this code as well since you need to think not only about solving the problem you set out to you have to solve it in a way that satisfies the numerous constraints you&#x2019;ve imposed on yourself. This is tantamount to coding with one hand tied behind your back.</p>
+<p>Next, as I said, you end up with more code. Not only more code but code that doesn&#x2019;t solve your problem. It&#x2019;s code that solves the fake problem you made for yourself. The more code like this that your project has the harder it becomes to understand what is happening. The signal to noise ratio can quickly deteriorate as more code is added to deal with problems created by code that was never needed in the first place. Some of the worst cases I&#x2019;ve seen of this happen when trying to follow some architecture or introducing patterns into the code.</p>
+<p>It&#x2019;s also evident to me that these rules of &#x2018;good&#x2019; code are so ingrained in people that they can&#x2019;t see past them. On a Hacker News <a href="http://iolivia.me/posts/24-hours-of-rust-game-dev/">post</a> a few days ago there was a classic &#x201C;Look at this architecture in a toy example, it will solve all your problems&#x201D;. In this case it was about Entity Component System. Jon Blow <a href="https://news.ycombinator.com/item?id=19307458">commented</a> pointing out that ECS is completely unnecessary and this could be better solved by writing code in the most obvious way. This <a href="https://news.ycombinator.com/item?id=19309151">reply</a> which I&#x2019;ll quote here exemplifies the mental shackles &#x2018;good&#x2019; code puts on people:</p>
 <blockquote>
-<p>By the obvious way, I&rsquor;m guessing you would just have a single type &OpenCurlyQuote;entity&rsquor; and put all entities in an array? While that may be obvious to you, it&rsquor;s not obvious to a lot of programmers (myself included) who grew up learning about object orientation, abstractions and modeling behaviour on the real world. ECS&rsquor;s for all their added complexity come with the breath of fresh air that is classical imperative programming where all the data is just available. There are scant few sources for learning this, Handmade Hero being a notable exception.</p>
+<p>By the obvious way, I&#x2019;m guessing you would just have a single type &#x2018;entity&#x2019; and put all entities in an array? While that may be obvious to you, it&#x2019;s not obvious to a lot of programmers (myself included) who grew up learning about object orientation, abstractions and modeling behaviour on the real world. ECS&#x2019;s for all their added complexity come with the breath of fresh air that is classical imperative programming where all the data is just available. There are scant few sources for learning this, Handmade Hero being a notable exception.</p>
 </blockquote>
-<p>People have been so indoctrinated into the cult of &OpenCurlyQuote;good&rsquor; code they can&rsquor;t even fathom what straight forward code might be. They can&rsquor;t think about programming without thinking about objects and modeling real world things. The only way they can break free from the shackles of &OpenCurlyQuote;good&rsquor; code is to swap their current set of rules for another. You don&rsquor;t need an ECS to have access to the data you just need to not follow the rules which tell you to hide it in the first place. What&rsquor;s the obvious way to code the solution? It&rsquor;s not a trick, he just means write the code that does the thing you need done. Write the code that does the thing. Enties have nothing to do with solving the problem. I can guarantee you that Super Mario Bros.&NonBreakingSpace;doesn&rsquor;t have a concept of entities in the code.</p>
-<p>Here&rsquor;s some &OpenCurlyQuote;bad&rsquor; code:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb1-1" title="1"><span class="dt">void</span> jump() {</a>
-<a class="sourceLine" id="cb1-2" title="2">  mario.yvel = <span class="dv">10</span>;</a>
-<a class="sourceLine" id="cb1-3" title="3">}</a></code></pre></div>
-<p>I can tell there are alarm bells ringing in your head. &OpenCurlyDoubleQuote;But what if something other that Mario needs to jump?&rdquor;, &OpenCurlyDoubleQuote;Is mario a global? What if I need more than one mario?&rdquor;. These things don&rsquor;t matter. This code solves the problem I&rsquor;m trying to solve, Mario needs to jump. Not the ones I don&rsquor;t have, multiple Marios and things other than Mario jumping. Don&rsquor;t pre-emptively solve problems you don&rsquor;t have, solve the ones you do. If I do need to have multiple marios then I can change the code later when that comes up, it&rsquor;s really not that big a deal. Your bad code will probably be shorter and to the point.</p>
-<p>Write bad code. Ha-code-a Matata, means no worries for the rest of your code. Forget all the rules and just write code to do the thing. Solve your actual problems not some problems that someone else has told you that you might run into in the future. Sometimes you&rsquor;ll write a big ol switch statement because that&rsquor;s the most obvious way to solve the problem. Embrace it, don&rsquor;t waste your time thinking of a way to make it &OpenCurlyQuote;nicer&rsquor; or &OpenCurlyQuote;elegant&rsquor;. Write abstractions when you face real maintenance hardships, but write small abstractions you probably don&rsquor;t need an &OpenCurlyQuote;architecture&rsquor;.</p>
-<p>We write software to solve problems. If the code you are writing is not solving the problem you set out to solve but one imposed upon yourself, consider writing bad code. Maybe you&rsquor;ll become the 10x developer everyone is amazed by.</p>
+<p>People have been so indoctrinated into the cult of &#x2018;good&#x2019; code they can&#x2019;t even fathom what straight forward code might be. They can&#x2019;t think about programming without thinking about objects and modeling real world things. The only way they can break free from the shackles of &#x2018;good&#x2019; code is to swap their current set of rules for another. You don&#x2019;t need an ECS to have access to the data you just need to not follow the rules which tell you to hide it in the first place. What&#x2019;s the obvious way to code the solution? It&#x2019;s not a trick, he just means write the code that does the thing you need done. Write the code that does the thing. Enties have nothing to do with solving the problem. I can guarantee you that Super Mario Bros.&#xA0;doesn&#x2019;t have a concept of entities in the code.</p>
+<p>Here&#x2019;s some &#x2018;bad&#x2019; code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> jump<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  mario<span class="op">.</span>yvel <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>can tell there are alarm bells ringing in your head. &#x201C;But what if something other that Mario needs to jump?&#x201D;, &#x201C;Is mario a global? What if I need more than one mario?&#x201D;. These things don&#x2019;t matter. This code solves the problem I&#x2019;m trying to solve, Mario needs to jump. Not the ones I don&#x2019;t have, multiple Marios and things other than Mario jumping. Don&#x2019;t pre-emptively solve problems you don&#x2019;t have, solve the ones you do. If I do need to have multiple marios then I can change the code later when that comes up, it&#x2019;s really not that big a deal. Your bad code will probably be shorter and to the point.</p>
+<p>Write bad code. Ha-code-a Matata, means no worries for the rest of your code. Forget all the rules and just write code to do the thing. Solve your actual problems not some problems that someone else has told you that you might run into in the future. Sometimes you&#x2019;ll write a big ol switch statement because that&#x2019;s the most obvious way to solve the problem. Embrace it, don&#x2019;t waste your time thinking of a way to make it &#x2018;nicer&#x2019; or &#x2018;elegant&#x2019;. Write abstractions when you face real maintenance hardships, but write small abstractions you probably don&#x2019;t need an &#x2018;architecture&#x2019;.</p>
+<p>We write software to solve problems. If the code you are writing is not solving the problem you set out to solve but one imposed upon yourself, consider writing bad code. Maybe you&#x2019;ll become the 10x developer everyone is amazed by.</p>
 <a href="/"><< Back</a>
 </body>
 </html>
